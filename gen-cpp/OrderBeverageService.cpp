@@ -115,10 +115,18 @@ uint32_t OrderBeverageService_PlaceOrder_result::read(::apache::thrift::protocol
     {
       case 0:
         if (ftype == ::apache::thrift::protocol::T_I32) {
-          int32_t ecast2;
-          xfer += iprot->readI32(ecast2);
-          this->success = (BeverageType::type)ecast2;
+          int32_t ecast5;
+          xfer += iprot->readI32(ecast5);
+          this->success = (BeverageType::type)ecast5;
           this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->se.read(iprot);
+          this->__isset.se = true;
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -144,6 +152,10 @@ uint32_t OrderBeverageService_PlaceOrder_result::write(::apache::thrift::protoco
   if (this->__isset.success) {
     xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_I32, 0);
     xfer += oprot->writeI32((int32_t)this->success);
+    xfer += oprot->writeFieldEnd();
+  } else if (this->__isset.se) {
+    xfer += oprot->writeFieldBegin("se", ::apache::thrift::protocol::T_STRUCT, 1);
+    xfer += this->se.write(oprot);
     xfer += oprot->writeFieldEnd();
   }
   xfer += oprot->writeFieldStop();
@@ -179,10 +191,18 @@ uint32_t OrderBeverageService_PlaceOrder_presult::read(::apache::thrift::protoco
     {
       case 0:
         if (ftype == ::apache::thrift::protocol::T_I32) {
-          int32_t ecast3;
-          xfer += iprot->readI32(ecast3);
-          (*(this->success)) = (BeverageType::type)ecast3;
+          int32_t ecast6;
+          xfer += iprot->readI32(ecast6);
+          (*(this->success)) = (BeverageType::type)ecast6;
           this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->se.read(iprot);
+          this->__isset.se = true;
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -254,6 +274,9 @@ BeverageType::type OrderBeverageServiceClient::recv_PlaceOrder()
   if (result.__isset.success) {
     return _return;
   }
+  if (result.__isset.se) {
+    throw result.se;
+  }
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "PlaceOrder failed: unknown result");
 }
 
@@ -301,6 +324,9 @@ void OrderBeverageServiceProcessor::process_PlaceOrder(int32_t seqid, ::apache::
   try {
     result.success = iface_->PlaceOrder(args.l);
     result.__isset.success = true;
+  } catch (ServiceException &se) {
+    result.se = se;
+    result.__isset.se = true;
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != NULL) {
       this->eventHandler_->handlerError(ctx, "OrderBeverageService.PlaceOrder");
@@ -409,6 +435,10 @@ BeverageType::type OrderBeverageServiceConcurrentClient::recv_PlaceOrder(const i
       if (result.__isset.success) {
         sentry.commit();
         return _return;
+      }
+      if (result.__isset.se) {
+        sentry.commit();
+        throw result.se;
       }
       // in a bad state, don't commit
       throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "PlaceOrder failed: unknown result");

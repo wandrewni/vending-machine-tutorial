@@ -1,6 +1,23 @@
 namespace cpp vending_machine
 namespace py vending_machine
 
+enum ErrorCode {
+  SE_CONNPOOL_TIMEOUT,
+  SE_THRIFT_CONN_ERROR,
+  SE_UNAUTHORIZED,
+  SE_MEMCACHED_ERROR,
+  SE_MONGODB_ERROR,
+  SE_REDIS_ERROR,
+  SE_THRIFT_HANDLER_ERROR,
+  SE_RABBITMQ_CONN_ERROR
+}
+
+exception ServiceException {
+    1: ErrorCode errorCode;
+    2: string message;
+}
+
+
 
 struct location{
 	1: i64 location_id;
@@ -20,7 +37,7 @@ enum BeverageType{
 service OrderBeverageService{
 	BeverageType PlaceOrder(
 		1: location l
-	)
+	)throws (1: ServiceException se)
 }
 
 service UpdateWeatherService{

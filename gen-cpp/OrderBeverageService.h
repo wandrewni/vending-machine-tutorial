@@ -108,8 +108,9 @@ class OrderBeverageService_PlaceOrder_pargs {
 };
 
 typedef struct _OrderBeverageService_PlaceOrder_result__isset {
-  _OrderBeverageService_PlaceOrder_result__isset() : success(false) {}
+  _OrderBeverageService_PlaceOrder_result__isset() : success(false), se(false) {}
   bool success :1;
+  bool se :1;
 } _OrderBeverageService_PlaceOrder_result__isset;
 
 class OrderBeverageService_PlaceOrder_result {
@@ -122,14 +123,19 @@ class OrderBeverageService_PlaceOrder_result {
 
   virtual ~OrderBeverageService_PlaceOrder_result() noexcept;
   BeverageType::type success;
+  ServiceException se;
 
   _OrderBeverageService_PlaceOrder_result__isset __isset;
 
   void __set_success(const BeverageType::type val);
 
+  void __set_se(const ServiceException& val);
+
   bool operator == (const OrderBeverageService_PlaceOrder_result & rhs) const
   {
     if (!(success == rhs.success))
+      return false;
+    if (!(se == rhs.se))
       return false;
     return true;
   }
@@ -145,8 +151,9 @@ class OrderBeverageService_PlaceOrder_result {
 };
 
 typedef struct _OrderBeverageService_PlaceOrder_presult__isset {
-  _OrderBeverageService_PlaceOrder_presult__isset() : success(false) {}
+  _OrderBeverageService_PlaceOrder_presult__isset() : success(false), se(false) {}
   bool success :1;
+  bool se :1;
 } _OrderBeverageService_PlaceOrder_presult__isset;
 
 class OrderBeverageService_PlaceOrder_presult {
@@ -155,6 +162,7 @@ class OrderBeverageService_PlaceOrder_presult {
 
   virtual ~OrderBeverageService_PlaceOrder_presult() noexcept;
   BeverageType::type* success;
+  ServiceException se;
 
   _OrderBeverageService_PlaceOrder_presult__isset __isset;
 

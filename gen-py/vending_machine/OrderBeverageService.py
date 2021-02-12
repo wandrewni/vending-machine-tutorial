@@ -65,6 +65,8 @@ class Client(Iface):
         iprot.readMessageEnd()
         if result.success is not None:
             return result.success
+        if result.se is not None:
+            raise result.se
         raise TApplicationException(TApplicationException.MISSING_RESULT, "PlaceOrder failed: unknown result")
 
 
@@ -105,6 +107,9 @@ class Processor(Iface, TProcessor):
             msg_type = TMessageType.REPLY
         except TTransport.TTransportException:
             raise
+        except ServiceException as se:
+            msg_type = TMessageType.REPLY
+            result.se = se
         except TApplicationException as ex:
             logging.exception('TApplication exception in handler')
             msg_type = TMessageType.EXCEPTION
@@ -188,12 +193,14 @@ class PlaceOrder_result(object):
     """
     Attributes:
      - success
+     - se
 
     """
 
 
-    def __init__(self, success=None,):
+    def __init__(self, success=None, se=None,):
         self.success = success
+        self.se = se
 
     def read(self, iprot):
         if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
@@ -209,6 +216,12 @@ class PlaceOrder_result(object):
                     self.success = iprot.readI32()
                 else:
                     iprot.skip(ftype)
+            elif fid == 1:
+                if ftype == TType.STRUCT:
+                    self.se = ServiceException()
+                    self.se.read(iprot)
+                else:
+                    iprot.skip(ftype)
             else:
                 iprot.skip(ftype)
             iprot.readFieldEnd()
@@ -222,6 +235,10 @@ class PlaceOrder_result(object):
         if self.success is not None:
             oprot.writeFieldBegin('success', TType.I32, 0)
             oprot.writeI32(self.success)
+            oprot.writeFieldEnd()
+        if self.se is not None:
+            oprot.writeFieldBegin('se', TType.STRUCT, 1)
+            self.se.write(oprot)
             oprot.writeFieldEnd()
         oprot.writeFieldStop()
         oprot.writeStructEnd()
@@ -242,6 +259,7 @@ class PlaceOrder_result(object):
 all_structs.append(PlaceOrder_result)
 PlaceOrder_result.thrift_spec = (
     (0, TType.I32, 'success', None, None, ),  # 0
+    (1, TType.STRUCT, 'se', [ServiceException, None], None, ),  # 1
 )
 fix_spec(all_structs)
 del all_structs

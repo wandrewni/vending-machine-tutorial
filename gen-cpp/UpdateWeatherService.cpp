@@ -44,9 +44,9 @@ uint32_t UpdateWeatherService_UpdateWeather_args::read(::apache::thrift::protoco
         break;
       case 2:
         if (ftype == ::apache::thrift::protocol::T_I32) {
-          int32_t ecast4;
-          xfer += iprot->readI32(ecast4);
-          this->w = (WeatherType::type)ecast4;
+          int32_t ecast7;
+          xfer += iprot->readI32(ecast7);
+          this->w = (WeatherType::type)ecast7;
           this->__isset.w = true;
         } else {
           xfer += iprot->skip(ftype);

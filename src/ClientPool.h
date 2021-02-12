@@ -8,6 +8,8 @@
 #include <chrono>
 #include <string>
 
+#include "logger.h"
+
 
 namespace vending_machine {
 

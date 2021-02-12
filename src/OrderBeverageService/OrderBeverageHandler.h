@@ -11,16 +11,17 @@
 
 #include "../ClientPool.h"
 #include "../ThriftClient.h"
+#include "../logger.h"
 
 namespace vending_machine{
 
-class OrderBeverageServiceHandler : virtual public OrderBeverageServiceIf {
+class OrderBeverageServiceHandler : public OrderBeverageServiceIf {
  public:
   OrderBeverageServiceHandler(
-		  ClientPool<ThriftClient<WeatherServiceClient>>*) ;
+		  ClientPool<ThriftClient<WeatherServiceClient>> *) ;
   ~OrderBeverageServiceHandler() override=default;
 
-  BeverageType::type PlaceOrder(const location& l);
+  BeverageType::type PlaceOrder(const location& l) override;
  private:
   ClientPool<ThriftClient<WeatherServiceClient>> *_weather_client_pool;
 };
@@ -47,17 +48,20 @@ BeverageType::type OrderBeverageServiceHandler::PlaceOrder(const location& l) {
       se.message = "Failed to connect to weather-service";
       throw se;
     }
-    auto weather_client = social_graph_client_wrapper->GetClient();
+    auto weather_client = weather_client_wrapper->GetClient();
+
+    // by default get cold
+    WeatherType::type weatherType = WeatherType::type::COLD;
 
     // 2. call the remote procedure : GetWeather
     try {
-      auto weatherType = social_graph_client->GetWeather(l.city);
+      weatherType = weather_client->GetWeather(l.city);
     } catch (...) {
       _weather_client_pool->Push(weather_client_wrapper);
       LOG(error) << "Failed to send call GetWeather to weather-client";
       throw;
     }
-    _social_graph_client_pool->Push(social_graph_client_wrapper);
+    _weather_client_pool->Push(weather_client_wrapper);
     
    // 3. business logic
    if(weatherType == WeatherType::type::WARM)
