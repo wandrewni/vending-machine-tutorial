@@ -21,7 +21,7 @@ class OrderBeverageServiceHandler : public OrderBeverageServiceIf {
 		  ClientPool<ThriftClient<WeatherServiceClient>> *) ;
   ~OrderBeverageServiceHandler() override=default;
 
-  BeverageType::type PlaceOrder(const location& l) override;
+  void PlaceOrder(std::string& _return, const int64_t city) override;
  private:
   ClientPool<ThriftClient<WeatherServiceClient>> *_weather_client_pool;
 };
@@ -35,11 +35,12 @@ OrderBeverageServiceHandler::OrderBeverageServiceHandler(
 }
 
 // Remote Procedure "PlaceOrder"
-
-BeverageType::type OrderBeverageServiceHandler::PlaceOrder(const location& l) {
+void OrderBeverageServiceHandler::PlaceOrder(std::string& _return, const int64_t city){
      // Your implementation goes here
      printf("PlaceOrder\n");
 
+     //return BeverageType::type::COLD;
+#if 1   
     // 1. get the weather service client pool
     auto weather_client_wrapper = _weather_client_pool->Pop();
     if (!weather_client_wrapper) {
@@ -55,7 +56,7 @@ BeverageType::type OrderBeverageServiceHandler::PlaceOrder(const location& l) {
 
     // 2. call the remote procedure : GetWeather
     try {
-      weatherType = weather_client->GetWeather(l.city);
+      weatherType = weather_client->GetWeather(city);
     } catch (...) {
       _weather_client_pool->Push(weather_client_wrapper);
       LOG(error) << "Failed to send call GetWeather to weather-client";
@@ -65,9 +66,10 @@ BeverageType::type OrderBeverageServiceHandler::PlaceOrder(const location& l) {
     
    // 3. business logic
    if(weatherType == WeatherType::type::WARM)
-	return BeverageType::type::COLD;
+	_return = "Cold beverage";//BeverageType::type::COLD;
    else
-	return BeverageType::type::HOT;
+	   _return = "Hot beverage";//BeverageType::type::HOT;
+#endif
 }
 
 } // namespace vending_machine

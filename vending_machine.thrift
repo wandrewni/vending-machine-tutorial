@@ -1,5 +1,7 @@
 namespace cpp vending_machine
 namespace py vending_machine
+namespace lua vending_machine
+
 
 enum ErrorCode {
   SE_CONNPOOL_TIMEOUT,
@@ -35,8 +37,8 @@ enum BeverageType{
 }
 
 service OrderBeverageService{
-	BeverageType PlaceOrder(
-		1: location l
+	string PlaceOrder(
+		1: i64 city
 	)throws (1: ServiceException se)
 }
 

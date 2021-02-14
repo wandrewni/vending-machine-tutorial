@@ -20,7 +20,7 @@ class OrderBeverageServiceHandler : virtual public OrderBeverageServiceIf {
     // Your initialization goes here
   }
 
-  BeverageType::type PlaceOrder(const location& l) {
+  void PlaceOrder(std::string& _return, const int64_t city) {
     // Your implementation goes here
     printf("PlaceOrder\n");
   }
