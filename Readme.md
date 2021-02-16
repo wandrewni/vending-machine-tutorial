@@ -9,6 +9,10 @@
 - luasocket (luarocks install luasocket
 - Thrift 0.14.0
 
+## Application Structure
+
+![Vending machine Architecture](figures/vendingmachine.png)
+
 # Cheatsheet on thrift 
 
 To compile vending_machine.thrift:
