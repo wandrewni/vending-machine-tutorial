@@ -7,7 +7,7 @@
 - libz-dev (apt-get install libz-dev)
 - luarocks (apt-get install luarocks)
 - luasocket (luarocks install luasocket
-- Thrift 0.14.0
+- Thrift 0.14.0 (Thrift tutorial: https://www.youtube.com/watch?v=NK6hz2JM89w)
 
 ## Application Structure
 
