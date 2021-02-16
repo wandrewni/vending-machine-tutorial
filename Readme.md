@@ -1,12 +1,23 @@
+# Pre-requirements
+
+- Docker
+- Docker-compose
+- Python 3.5+ (with asyncio and aiohttp)
+- libssl-dev (apt-get install libssl-dev)
+- libz-dev (apt-get install libz-dev)
+- luarocks (apt-get install luarocks)
+- luasocket (luarocks install luasocket
+- Thrift 0.14.0
+
 # Cheatsheet on thrift 
 
 To compile vending_machine.thrift:
 
-$ thrift --gen cpp vending_machine.thrift
+thrift --gen cpp vending_machine.thrift
 
-$ thrift --gen py vending_machine.thrift
+thrift --gen py vending_machine.thrift
 
-$ thrift --gen lua vending_machine.thrift
+thrift --gen lua vending_machine.thrift
 
 # cheatsheet on docker commands
 
@@ -27,7 +38,7 @@ Ref:
 1. https://stackify.com/docker-build-a-beginners-guide-to-building-docker-images/
 2. https://www.digitalocean.com/community/tutorials/how-to-remove-docker-images-containers-and-volumes
 
-#cheatsheet on docker-compose
+# cheatsheet on docker-compose
 
 1. Run docker-compose script to run all the containers:
 $ docker-compose up
