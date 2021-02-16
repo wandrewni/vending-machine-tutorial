@@ -11,7 +11,7 @@
 
 ## Application Structure
 
-![Vending machine Architecture](figures/vendingmachine.png)
+![Vending machine Architecture](vendingmachine.png)
 
 # Cheatsheet on thrift 
 
