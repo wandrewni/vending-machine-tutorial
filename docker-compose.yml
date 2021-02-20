@@ -1,13 +1,13 @@
 version: "3"
 services:
   order-beverage-service:
-    image: probir/vending-machine-microservices:latest
+    image: wandrewni/vending-machine:latest
     hostname: order-beverage-service
     restart: always
     entrypoint: OrderBeverageService
 
   weather-service:
-    image: probir/vending-machine-microservices:latest
+    image: wandrewni/vending-machine:latest
     hostname: weather-service
     restart: always
     entrypoint: WeatherService
