@@ -19,20 +19,24 @@ namespace vending_machine{
 class OrderBeverageServiceHandler : public OrderBeverageServiceIf {
  public:
   OrderBeverageServiceHandler(
-		  ClientPool<ThriftClient<WeatherServiceClient>> *) ;
+		  ClientPool<ThriftClient<WeatherServiceClient>> *,
+		   ClientPool<ThriftClient<BeveragePreferenceServiceClient>> *) ;
   ~OrderBeverageServiceHandler() override=default;
 
   void PlaceOrder(std::string& _return, const int64_t city) override;
  private:
   ClientPool<ThriftClient<WeatherServiceClient>> *_weather_client_pool;
+  ClientPool<ThriftClient<BeveragePreferenceServiceClient>> *_beverage_preference_client_pool;
 };
 
 // Constructor
 OrderBeverageServiceHandler::OrderBeverageServiceHandler(
-		ClientPool<ThriftClient<WeatherServiceClient>> *weather_client_pool) {
+		ClientPool<ThriftClient<WeatherServiceClient>> *weather_client_pool,
+		ClientPool<ThriftClient<BeveragePreferenceServiceClient>> *beverage_preference_client_pool) {
 
      // Storing the clientpool
      _weather_client_pool = weather_client_pool;
+     _beverage_preference_client_pool = beverage_preference_client_pool;
 }
 
 // Remote Procedure "PlaceOrder"
@@ -67,6 +71,9 @@ void OrderBeverageServiceHandler::PlaceOrder(std::string& _return, const int64_t
     
    // 3. business logic
    if(weatherType == WeatherType::type::WARM)
+//   std::string beverage = ""
+
+
 	_return = "Cold beverage";//BeverageType::type::COLD;
    else
 	   _return = "Hot beverage";//BeverageType::type::HOT;
