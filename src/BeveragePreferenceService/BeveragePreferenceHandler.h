@@ -19,7 +19,7 @@ class BeveragePreferenceServiceHandler : public BeveragePreferenceServiceIf {
   BeveragePreferenceServiceHandler();
   ~BeveragePreferenceServiceHandler() override=default;
 
-  WeatherType::type GetWeather(const int64_t city) override;
+  std:string getBeverage(const BeverageType type) override;
 };
 
 // Constructor
@@ -29,11 +29,29 @@ BeveragePreferenceServiceHandler::BeveragePreferenceServiceHandler() {
 
 // Remote Procedure "PlaceOrder"
 
-WeatherType::type BeveragePreferenceServiceHandler::GetWeather(const int64_t city) {
+std::string BeveragePreferenceServiceHandler::getBeverage(const BeverageType type) {
      // Your implementation goes here
-     printf("GetWeather\n");
+     printf("getBeverage\n");
     // randomly select a weather
-    return (0 == city%2)? WeatherType::type::COLD : WeatherType::type::WARM;
+    if (type == BeverageType::type::HOT) {
+        switch (rand()%3) {
+            case 0:
+                return "cappuccino";
+            case 1:
+                return "latte";
+            case 2:
+                return "espresso";
+        }
+    } else {
+        switch (rand()%3) {
+            case 0:
+                return "lemonade";
+            case 1:
+                return "ice tea";
+            case 2:
+                return "soda";
+        }
+    }
 }
 
 } // namespace vending_machine

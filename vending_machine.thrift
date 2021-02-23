@@ -49,7 +49,7 @@ service WeatherService{
 }
 
 service BeveragePreferenceService{
-    WeatherType GetWeather(
-        1: i64 city
+    string getBeverage(
+        1: BeverageType type
     )
 }
