@@ -19,7 +19,7 @@ class BeveragePreferenceServiceHandler : public BeveragePreferenceServiceIf {
   BeveragePreferenceServiceHandler();
   ~BeveragePreferenceServiceHandler() override=default;
 
-  std::string getBeverage(const BeverageType type) override;
+  void getBeverage(std::string& _return, const BeverageType::type type) override;
 };
 
 // Constructor
@@ -29,27 +29,33 @@ BeveragePreferenceServiceHandler::BeveragePreferenceServiceHandler() {
 
 // Remote Procedure "PlaceOrder"
 
-std::string BeveragePreferenceServiceHandler::getBeverage(const BeverageType type) {
+void BeveragePreferenceServiceHandler::getBeverage(std::string& _return, const BeverageType::type type) {
      // Your implementation goes here
      printf("getBeverage\n");
     // randomly select a weather
     if (type == BeverageType::type::HOT) {
         switch (rand()%3) {
             case 0:
-                return "cappuccino";
+                _return = "cappuccino";
+                break;
             case 1:
-                return "latte";
+                _return = "latte";
+                break;
             case 2:
-                return "espresso";
+                _return = "espresso";
+                break;
         }
     } else {
         switch (rand()%3) {
             case 0:
-                return "lemonade";
+                _return = "lemonade";
+                break;
             case 1:
-                return "ice tea";
+                _return = "ice tea";
+                break;
             case 2:
-                return "soda";
+                _return = "soda";
+                break;
         }
     }
 }
