@@ -6,12 +6,30 @@
 --
 
 
-require 'Thrift'
-require 'vending_machine_ttypes'
+local vending_machine_ttype = require 'vending_machine_ttypes'
 
-BeveragePreferenceServiceClient = __TObject.new(__TClient, {
+local Thrift = require 'Thrift'
+local TType = Thrift.TType
+local TMessageType = Thrift.TMessageType
+local __TObject = Thrift.__TObject
+local TApplicationException = Thrift.TApplicationException
+local __TClient = Thrift.__TClient
+local __TProcessor = Thrift.__TProcessor
+local ttype = Thrift.ttype
+local ttable_size = Thrift.ttable_size
+local TException = Thrift.TException
+
+local BeveragePreferenceServiceClient = __TObject.new(__TClient, {
   __type = 'BeveragePreferenceServiceClient'
 })
+
+local GetWeather_args = __TObject:new{
+  city
+}
+
+local GetWeather_result = __TObject:new{
+  success
+}
 
 function BeveragePreferenceServiceClient:GetWeather(city)
   self:send_GetWeather(city)
@@ -43,12 +61,12 @@ function BeveragePreferenceServiceClient:recv_GetWeather(city)
   end
   error(TApplicationException:new{errorCode = TApplicationException.MISSING_RESULT})
 end
-BeveragePreferenceServiceIface = __TObject:new{
+local BeveragePreferenceServiceIface = __TObject:new{
   __type = 'BeveragePreferenceServiceIface'
 }
 
 
-BeveragePreferenceServiceProcessor = __TObject.new(__TProcessor
+local BeveragePreferenceServiceProcessor = __TObject.new(__TProcessor
 , {
  __type = 'BeveragePreferenceServiceProcessor'
 })
@@ -96,10 +114,6 @@ end
 
 -- HELPER FUNCTIONS AND STRUCTURES
 
-GetWeather_args = __TObject:new{
-  city
-}
-
 function GetWeather_args:read(iprot)
   iprot:readStructBegin()
   while true do
@@ -131,10 +145,6 @@ function GetWeather_args:write(oprot)
   oprot:writeStructEnd()
 end
 
-GetWeather_result = __TObject:new{
-  success
-}
-
 function GetWeather_result:read(iprot)
   iprot:readStructBegin()
   while true do
@@ -165,3 +175,5 @@ function GetWeather_result:write(oprot)
   oprot:writeFieldStop()
   oprot:writeStructEnd()
 end
+
+return BeveragePreferenceServiceClient
