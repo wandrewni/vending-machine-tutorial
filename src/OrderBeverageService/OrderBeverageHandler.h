@@ -79,12 +79,13 @@ void OrderBeverageServiceHandler::PlaceOrder(std::string& _return, const int64_t
     }
     auto beverage_preference_client = beverage_preference_service_client_wrapper->GetClient();
 
+    BeverageType::type beverageType = weatherType == WeatherType::type::WARM ? BeverageType::type::COLD : BeverageType::type::HOT;
     // by default get water
     std::string beverage = "water";
 
     // 4. call the remote procedure : GetWeather
     try {
-      beverage_preference_client->getBeverage(beverage, weatherType);
+      beverage_preference_client->getBeverage(beverage, beverageType);
     } catch (...) {
       _beverage_preference_client_pool->Push(beverage_preference_service_client_wrapper);
       LOG(error) << "Failed to send call getBeverage to beverage-preference-client";
