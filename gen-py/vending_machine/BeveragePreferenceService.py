@@ -19,10 +19,10 @@ all_structs = []
 
 
 class Iface(object):
-    def GetWeather(self, city):
+    def getBeverage(self, type):
         """
         Parameters:
-         - city
+         - type
 
         """
         pass
@@ -35,24 +35,24 @@ class Client(Iface):
             self._oprot = oprot
         self._seqid = 0
 
-    def GetWeather(self, city):
+    def getBeverage(self, type):
         """
         Parameters:
-         - city
+         - type
 
         """
-        self.send_GetWeather(city)
-        return self.recv_GetWeather()
+        self.send_getBeverage(type)
+        return self.recv_getBeverage()
 
-    def send_GetWeather(self, city):
-        self._oprot.writeMessageBegin('GetWeather', TMessageType.CALL, self._seqid)
-        args = GetWeather_args()
-        args.city = city
+    def send_getBeverage(self, type):
+        self._oprot.writeMessageBegin('getBeverage', TMessageType.CALL, self._seqid)
+        args = getBeverage_args()
+        args.type = type
         args.write(self._oprot)
         self._oprot.writeMessageEnd()
         self._oprot.trans.flush()
 
-    def recv_GetWeather(self):
+    def recv_getBeverage(self):
         iprot = self._iprot
         (fname, mtype, rseqid) = iprot.readMessageBegin()
         if mtype == TMessageType.EXCEPTION:
@@ -60,19 +60,19 @@ class Client(Iface):
             x.read(iprot)
             iprot.readMessageEnd()
             raise x
-        result = GetWeather_result()
+        result = getBeverage_result()
         result.read(iprot)
         iprot.readMessageEnd()
         if result.success is not None:
             return result.success
-        raise TApplicationException(TApplicationException.MISSING_RESULT, "GetWeather failed: unknown result")
+        raise TApplicationException(TApplicationException.MISSING_RESULT, "getBeverage failed: unknown result")
 
 
 class Processor(Iface, TProcessor):
     def __init__(self, handler):
         self._handler = handler
         self._processMap = {}
-        self._processMap["GetWeather"] = Processor.process_GetWeather
+        self._processMap["getBeverage"] = Processor.process_getBeverage
         self._on_message_begin = None
 
     def on_message_begin(self, func):
@@ -95,13 +95,13 @@ class Processor(Iface, TProcessor):
             self._processMap[name](self, seqid, iprot, oprot)
         return True
 
-    def process_GetWeather(self, seqid, iprot, oprot):
-        args = GetWeather_args()
+    def process_getBeverage(self, seqid, iprot, oprot):
+        args = getBeverage_args()
         args.read(iprot)
         iprot.readMessageEnd()
-        result = GetWeather_result()
+        result = getBeverage_result()
         try:
-            result.success = self._handler.GetWeather(args.city)
+            result.success = self._handler.getBeverage(args.type)
             msg_type = TMessageType.REPLY
         except TTransport.TTransportException:
             raise
@@ -113,7 +113,7 @@ class Processor(Iface, TProcessor):
             logging.exception('Unexpected exception in handler')
             msg_type = TMessageType.EXCEPTION
             result = TApplicationException(TApplicationException.INTERNAL_ERROR, 'Internal error')
-        oprot.writeMessageBegin("GetWeather", msg_type, seqid)
+        oprot.writeMessageBegin("getBeverage", msg_type, seqid)
         result.write(oprot)
         oprot.writeMessageEnd()
         oprot.trans.flush()
@@ -121,16 +121,16 @@ class Processor(Iface, TProcessor):
 # HELPER FUNCTIONS AND STRUCTURES
 
 
-class GetWeather_args(object):
+class getBeverage_args(object):
     """
     Attributes:
-     - city
+     - type
 
     """
 
 
-    def __init__(self, city=None,):
-        self.city = city
+    def __init__(self, type=None,):
+        self.type = type
 
     def read(self, iprot):
         if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
@@ -142,8 +142,8 @@ class GetWeather_args(object):
             if ftype == TType.STOP:
                 break
             if fid == 1:
-                if ftype == TType.I64:
-                    self.city = iprot.readI64()
+                if ftype == TType.I32:
+                    self.type = iprot.readI32()
                 else:
                     iprot.skip(ftype)
             else:
@@ -155,10 +155,10 @@ class GetWeather_args(object):
         if oprot._fast_encode is not None and self.thrift_spec is not None:
             oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
             return
-        oprot.writeStructBegin('GetWeather_args')
-        if self.city is not None:
-            oprot.writeFieldBegin('city', TType.I64, 1)
-            oprot.writeI64(self.city)
+        oprot.writeStructBegin('getBeverage_args')
+        if self.type is not None:
+            oprot.writeFieldBegin('type', TType.I32, 1)
+            oprot.writeI32(self.type)
             oprot.writeFieldEnd()
         oprot.writeFieldStop()
         oprot.writeStructEnd()
@@ -176,14 +176,14 @@ class GetWeather_args(object):
 
     def __ne__(self, other):
         return not (self == other)
-all_structs.append(GetWeather_args)
-GetWeather_args.thrift_spec = (
+all_structs.append(getBeverage_args)
+getBeverage_args.thrift_spec = (
     None,  # 0
-    (1, TType.I64, 'city', None, None, ),  # 1
+    (1, TType.I32, 'type', None, None, ),  # 1
 )
 
 
-class GetWeather_result(object):
+class getBeverage_result(object):
     """
     Attributes:
      - success
@@ -204,8 +204,8 @@ class GetWeather_result(object):
             if ftype == TType.STOP:
                 break
             if fid == 0:
-                if ftype == TType.I32:
-                    self.success = iprot.readI32()
+                if ftype == TType.STRING:
+                    self.success = iprot.readString().decode('utf-8', errors='replace') if sys.version_info[0] == 2 else iprot.readString()
                 else:
                     iprot.skip(ftype)
             else:
@@ -217,10 +217,10 @@ class GetWeather_result(object):
         if oprot._fast_encode is not None and self.thrift_spec is not None:
             oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
             return
-        oprot.writeStructBegin('GetWeather_result')
+        oprot.writeStructBegin('getBeverage_result')
         if self.success is not None:
-            oprot.writeFieldBegin('success', TType.I32, 0)
-            oprot.writeI32(self.success)
+            oprot.writeFieldBegin('success', TType.STRING, 0)
+            oprot.writeString(self.success.encode('utf-8') if sys.version_info[0] == 2 else self.success)
             oprot.writeFieldEnd()
         oprot.writeFieldStop()
         oprot.writeStructEnd()
@@ -238,9 +238,9 @@ class GetWeather_result(object):
 
     def __ne__(self, other):
         return not (self == other)
-all_structs.append(GetWeather_result)
-GetWeather_result.thrift_spec = (
-    (0, TType.I32, 'success', None, None, ),  # 0
+all_structs.append(getBeverage_result)
+getBeverage_result.thrift_spec = (
+    (0, TType.STRING, 'success', 'UTF8', None, ),  # 0
 )
 fix_spec(all_structs)
 del all_structs

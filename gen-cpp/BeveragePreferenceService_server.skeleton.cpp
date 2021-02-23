@@ -20,9 +20,9 @@ class BeveragePreferenceServiceHandler : virtual public BeveragePreferenceServic
     // Your initialization goes here
   }
 
-  WeatherType::type GetWeather(const int64_t city) {
+  void getBeverage(std::string& _return, const BeverageType::type type) {
     // Your implementation goes here
-    printf("GetWeather\n");
+    printf("getBeverage\n");
   }
 
 };

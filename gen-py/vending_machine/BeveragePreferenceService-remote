@@ -24,7 +24,7 @@ if len(sys.argv) <= 1 or sys.argv[1] == '--help':
     print('Usage: ' + sys.argv[0] + ' [-h host[:port]] [-u url] [-f[ramed]] [-s[sl]] [-novalidate] [-ca_certs certs] [-keyfile keyfile] [-certfile certfile] function [arg1 [arg2...]]')
     print('')
     print('Functions:')
-    print('  WeatherType GetWeather(i64 city)')
+    print('  string getBeverage(BeverageType type)')
     print('')
     sys.exit(0)
 
@@ -104,11 +104,11 @@ protocol = TBinaryProtocol(transport)
 client = BeveragePreferenceService.Client(protocol)
 transport.open()
 
-if cmd == 'GetWeather':
+if cmd == 'getBeverage':
     if len(args) != 1:
-        print('GetWeather requires 1 args')
+        print('getBeverage requires 1 args')
         sys.exit(1)
-    pp.pprint(client.GetWeather(eval(args[0]),))
+    pp.pprint(client.getBeverage(eval(args[0]),))
 
 else:
     print('Unrecognized method %s' % cmd)

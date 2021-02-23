@@ -23,29 +23,29 @@ local BeveragePreferenceServiceClient = __TObject.new(__TClient, {
   __type = 'BeveragePreferenceServiceClient'
 })
 
-local GetWeather_args = __TObject:new{
-  city
+local getBeverage_args = __TObject:new{
+  type
 }
 
-local GetWeather_result = __TObject:new{
+local getBeverage_result = __TObject:new{
   success
 }
 
-function BeveragePreferenceServiceClient:GetWeather(city)
-  self:send_GetWeather(city)
-  return self:recv_GetWeather(city)
+function BeveragePreferenceServiceClient:getBeverage(type)
+  self:send_getBeverage(type)
+  return self:recv_getBeverage(type)
 end
 
-function BeveragePreferenceServiceClient:send_GetWeather(city)
-  self.oprot:writeMessageBegin('GetWeather', TMessageType.CALL, self._seqid)
-  local args = GetWeather_args:new{}
-  args.city = city
+function BeveragePreferenceServiceClient:send_getBeverage(type)
+  self.oprot:writeMessageBegin('getBeverage', TMessageType.CALL, self._seqid)
+  local args = getBeverage_args:new{}
+  args.type = type
   args:write(self.oprot)
   self.oprot:writeMessageEnd()
   self.oprot.trans:flush()
 end
 
-function BeveragePreferenceServiceClient:recv_GetWeather(city)
+function BeveragePreferenceServiceClient:recv_getBeverage(type)
   local fname, mtype, rseqid = self.iprot:readMessageBegin()
   if mtype == TMessageType.EXCEPTION then
     local x = TApplicationException:new{}
@@ -53,7 +53,7 @@ function BeveragePreferenceServiceClient:recv_GetWeather(city)
     self.iprot:readMessageEnd()
     error(x)
   end
-  local result = GetWeather_result:new{}
+  local result = getBeverage_result:new{}
   result:read(self.iprot)
   self.iprot:readMessageEnd()
   if result.success ~= nil then
@@ -92,20 +92,20 @@ function BeveragePreferenceServiceProcessor:process(iprot, oprot, server_ctx)
   end
 end
 
-function BeveragePreferenceServiceProcessor:process_GetWeather(seqid, iprot, oprot, server_ctx)
-  local args = GetWeather_args:new{}
+function BeveragePreferenceServiceProcessor:process_getBeverage(seqid, iprot, oprot, server_ctx)
+  local args = getBeverage_args:new{}
   local reply_type = TMessageType.REPLY
   args:read(iprot)
   iprot:readMessageEnd()
-  local result = GetWeather_result:new{}
-  local status, res = pcall(self.handler.GetWeather, self.handler, args.city)
+  local result = getBeverage_result:new{}
+  local status, res = pcall(self.handler.getBeverage, self.handler, args.type)
   if not status then
     reply_type = TMessageType.EXCEPTION
     result = TApplicationException:new{message = res}
   else
     result.success = res
   end
-  oprot:writeMessageBegin('GetWeather', reply_type, seqid)
+  oprot:writeMessageBegin('getBeverage', reply_type, seqid)
   result:write(oprot)
   oprot:writeMessageEnd()
   oprot.trans:flush()
@@ -114,15 +114,15 @@ end
 
 -- HELPER FUNCTIONS AND STRUCTURES
 
-function GetWeather_args:read(iprot)
+function getBeverage_args:read(iprot)
   iprot:readStructBegin()
   while true do
     local fname, ftype, fid = iprot:readFieldBegin()
     if ftype == TType.STOP then
       break
     elseif fid == 1 then
-      if ftype == TType.I64 then
-        self.city = iprot:readI64()
+      if ftype == TType.I32 then
+        self.type = iprot:readI32()
       else
         iprot:skip(ftype)
       end
@@ -134,26 +134,26 @@ function GetWeather_args:read(iprot)
   iprot:readStructEnd()
 end
 
-function GetWeather_args:write(oprot)
-  oprot:writeStructBegin('GetWeather_args')
-  if self.city ~= nil then
-    oprot:writeFieldBegin('city', TType.I64, 1)
-    oprot:writeI64(self.city)
+function getBeverage_args:write(oprot)
+  oprot:writeStructBegin('getBeverage_args')
+  if self.type ~= nil then
+    oprot:writeFieldBegin('type', TType.I32, 1)
+    oprot:writeI32(self.type)
     oprot:writeFieldEnd()
   end
   oprot:writeFieldStop()
   oprot:writeStructEnd()
 end
 
-function GetWeather_result:read(iprot)
+function getBeverage_result:read(iprot)
   iprot:readStructBegin()
   while true do
     local fname, ftype, fid = iprot:readFieldBegin()
     if ftype == TType.STOP then
       break
     elseif fid == 0 then
-      if ftype == TType.I32 then
-        self.success = iprot:readI32()
+      if ftype == TType.STRING then
+        self.success = iprot:readString()
       else
         iprot:skip(ftype)
       end
@@ -165,15 +165,13 @@ function GetWeather_result:read(iprot)
   iprot:readStructEnd()
 end
 
-function GetWeather_result:write(oprot)
-  oprot:writeStructBegin('GetWeather_result')
+function getBeverage_result:write(oprot)
+  oprot:writeStructBegin('getBeverage_result')
   if self.success ~= nil then
-    oprot:writeFieldBegin('success', TType.I32, 0)
-    oprot:writeI32(self.success)
+    oprot:writeFieldBegin('success', TType.STRING, 0)
+    oprot:writeString(self.success)
     oprot:writeFieldEnd()
   end
   oprot:writeFieldStop()
   oprot:writeStructEnd()
 end
-
-return BeveragePreferenceServiceClient

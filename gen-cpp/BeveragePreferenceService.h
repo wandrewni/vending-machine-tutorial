@@ -22,7 +22,7 @@ namespace vending_machine {
 class BeveragePreferenceServiceIf {
  public:
   virtual ~BeveragePreferenceServiceIf() {}
-  virtual WeatherType::type GetWeather(const int64_t city) = 0;
+  virtual void getBeverage(std::string& _return, const BeverageType::type type) = 0;
 };
 
 class BeveragePreferenceServiceIfFactory {
@@ -52,43 +52,46 @@ class BeveragePreferenceServiceIfSingletonFactory : virtual public BeveragePrefe
 class BeveragePreferenceServiceNull : virtual public BeveragePreferenceServiceIf {
  public:
   virtual ~BeveragePreferenceServiceNull() {}
-  WeatherType::type GetWeather(const int64_t /* city */) {
-    WeatherType::type _return = (WeatherType::type)0;
-    return _return;
+  void getBeverage(std::string& /* _return */, const BeverageType::type /* type */) {
+    return;
   }
 };
 
-typedef struct _BeveragePreferenceService_GetWeather_args__isset {
-  _BeveragePreferenceService_GetWeather_args__isset() : city(false) {}
-  bool city :1;
-} _BeveragePreferenceService_GetWeather_args__isset;
+typedef struct _BeveragePreferenceService_getBeverage_args__isset {
+  _BeveragePreferenceService_getBeverage_args__isset() : type(false) {}
+  bool type :1;
+} _BeveragePreferenceService_getBeverage_args__isset;
 
-class BeveragePreferenceService_GetWeather_args {
+class BeveragePreferenceService_getBeverage_args {
  public:
 
-  BeveragePreferenceService_GetWeather_args(const BeveragePreferenceService_GetWeather_args&);
-  BeveragePreferenceService_GetWeather_args& operator=(const BeveragePreferenceService_GetWeather_args&);
-  BeveragePreferenceService_GetWeather_args() : city(0) {
+  BeveragePreferenceService_getBeverage_args(const BeveragePreferenceService_getBeverage_args&);
+  BeveragePreferenceService_getBeverage_args& operator=(const BeveragePreferenceService_getBeverage_args&);
+  BeveragePreferenceService_getBeverage_args() : type((BeverageType::type)0) {
   }
 
-  virtual ~BeveragePreferenceService_GetWeather_args() noexcept;
-  int64_t city;
+  virtual ~BeveragePreferenceService_getBeverage_args() noexcept;
+  /**
+   * 
+   * @see BeverageType
+   */
+  BeverageType::type type;
 
-  _BeveragePreferenceService_GetWeather_args__isset __isset;
+  _BeveragePreferenceService_getBeverage_args__isset __isset;
 
-  void __set_city(const int64_t val);
+  void __set_type(const BeverageType::type val);
 
-  bool operator == (const BeveragePreferenceService_GetWeather_args & rhs) const
+  bool operator == (const BeveragePreferenceService_getBeverage_args & rhs) const
   {
-    if (!(city == rhs.city))
+    if (!(type == rhs.type))
       return false;
     return true;
   }
-  bool operator != (const BeveragePreferenceService_GetWeather_args &rhs) const {
+  bool operator != (const BeveragePreferenceService_getBeverage_args &rhs) const {
     return !(*this == rhs);
   }
 
-  bool operator < (const BeveragePreferenceService_GetWeather_args & ) const;
+  bool operator < (const BeveragePreferenceService_getBeverage_args & ) const;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
@@ -96,75 +99,71 @@ class BeveragePreferenceService_GetWeather_args {
 };
 
 
-class BeveragePreferenceService_GetWeather_pargs {
+class BeveragePreferenceService_getBeverage_pargs {
  public:
 
 
-  virtual ~BeveragePreferenceService_GetWeather_pargs() noexcept;
-  const int64_t* city;
+  virtual ~BeveragePreferenceService_getBeverage_pargs() noexcept;
+  /**
+   * 
+   * @see BeverageType
+   */
+  const BeverageType::type* type;
 
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
 };
 
-typedef struct _BeveragePreferenceService_GetWeather_result__isset {
-  _BeveragePreferenceService_GetWeather_result__isset() : success(false) {}
+typedef struct _BeveragePreferenceService_getBeverage_result__isset {
+  _BeveragePreferenceService_getBeverage_result__isset() : success(false) {}
   bool success :1;
-} _BeveragePreferenceService_GetWeather_result__isset;
+} _BeveragePreferenceService_getBeverage_result__isset;
 
-class BeveragePreferenceService_GetWeather_result {
+class BeveragePreferenceService_getBeverage_result {
  public:
 
-  BeveragePreferenceService_GetWeather_result(const BeveragePreferenceService_GetWeather_result&);
-  BeveragePreferenceService_GetWeather_result& operator=(const BeveragePreferenceService_GetWeather_result&);
-  BeveragePreferenceService_GetWeather_result() : success((WeatherType::type)0) {
+  BeveragePreferenceService_getBeverage_result(const BeveragePreferenceService_getBeverage_result&);
+  BeveragePreferenceService_getBeverage_result& operator=(const BeveragePreferenceService_getBeverage_result&);
+  BeveragePreferenceService_getBeverage_result() : success() {
   }
 
-  virtual ~BeveragePreferenceService_GetWeather_result() noexcept;
-  /**
-   * 
-   * @see WeatherType
-   */
-  WeatherType::type success;
+  virtual ~BeveragePreferenceService_getBeverage_result() noexcept;
+  std::string success;
 
-  _BeveragePreferenceService_GetWeather_result__isset __isset;
+  _BeveragePreferenceService_getBeverage_result__isset __isset;
 
-  void __set_success(const WeatherType::type val);
+  void __set_success(const std::string& val);
 
-  bool operator == (const BeveragePreferenceService_GetWeather_result & rhs) const
+  bool operator == (const BeveragePreferenceService_getBeverage_result & rhs) const
   {
     if (!(success == rhs.success))
       return false;
     return true;
   }
-  bool operator != (const BeveragePreferenceService_GetWeather_result &rhs) const {
+  bool operator != (const BeveragePreferenceService_getBeverage_result &rhs) const {
     return !(*this == rhs);
   }
 
-  bool operator < (const BeveragePreferenceService_GetWeather_result & ) const;
+  bool operator < (const BeveragePreferenceService_getBeverage_result & ) const;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
 };
 
-typedef struct _BeveragePreferenceService_GetWeather_presult__isset {
-  _BeveragePreferenceService_GetWeather_presult__isset() : success(false) {}
+typedef struct _BeveragePreferenceService_getBeverage_presult__isset {
+  _BeveragePreferenceService_getBeverage_presult__isset() : success(false) {}
   bool success :1;
-} _BeveragePreferenceService_GetWeather_presult__isset;
+} _BeveragePreferenceService_getBeverage_presult__isset;
 
-class BeveragePreferenceService_GetWeather_presult {
+class BeveragePreferenceService_getBeverage_presult {
  public:
 
 
-  virtual ~BeveragePreferenceService_GetWeather_presult() noexcept;
-  /**
-   * 
-   * @see WeatherType
-   */
-  WeatherType::type* success;
+  virtual ~BeveragePreferenceService_getBeverage_presult() noexcept;
+  std::string* success;
 
-  _BeveragePreferenceService_GetWeather_presult__isset __isset;
+  _BeveragePreferenceService_getBeverage_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
 
@@ -195,9 +194,9 @@ class BeveragePreferenceServiceClient : virtual public BeveragePreferenceService
   std::shared_ptr< ::apache::thrift::protocol::TProtocol> getOutputProtocol() {
     return poprot_;
   }
-  WeatherType::type GetWeather(const int64_t city);
-  void send_GetWeather(const int64_t city);
-  WeatherType::type recv_GetWeather();
+  void getBeverage(std::string& _return, const BeverageType::type type);
+  void send_getBeverage(const BeverageType::type type);
+  void recv_getBeverage(std::string& _return);
  protected:
   std::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   std::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
@@ -213,11 +212,11 @@ class BeveragePreferenceServiceProcessor : public ::apache::thrift::TDispatchPro
   typedef  void (BeveragePreferenceServiceProcessor::*ProcessFunction)(int32_t, ::apache::thrift::protocol::TProtocol*, ::apache::thrift::protocol::TProtocol*, void*);
   typedef std::map<std::string, ProcessFunction> ProcessMap;
   ProcessMap processMap_;
-  void process_GetWeather(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_getBeverage(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
  public:
   BeveragePreferenceServiceProcessor(::std::shared_ptr<BeveragePreferenceServiceIf> iface) :
     iface_(iface) {
-    processMap_["GetWeather"] = &BeveragePreferenceServiceProcessor::process_GetWeather;
+    processMap_["getBeverage"] = &BeveragePreferenceServiceProcessor::process_getBeverage;
   }
 
   virtual ~BeveragePreferenceServiceProcessor() {}
@@ -246,13 +245,14 @@ class BeveragePreferenceServiceMultiface : virtual public BeveragePreferenceServ
     ifaces_.push_back(iface);
   }
  public:
-  WeatherType::type GetWeather(const int64_t city) {
+  void getBeverage(std::string& _return, const BeverageType::type type) {
     size_t sz = ifaces_.size();
     size_t i = 0;
     for (; i < (sz - 1); ++i) {
-      ifaces_[i]->GetWeather(city);
+      ifaces_[i]->getBeverage(_return, type);
     }
-    return ifaces_[i]->GetWeather(city);
+    ifaces_[i]->getBeverage(_return, type);
+    return;
   }
 
 };
@@ -287,9 +287,9 @@ class BeveragePreferenceServiceConcurrentClient : virtual public BeveragePrefere
   std::shared_ptr< ::apache::thrift::protocol::TProtocol> getOutputProtocol() {
     return poprot_;
   }
-  WeatherType::type GetWeather(const int64_t city);
-  int32_t send_GetWeather(const int64_t city);
-  WeatherType::type recv_GetWeather(const int32_t seqid);
+  void getBeverage(std::string& _return, const BeverageType::type type);
+  int32_t send_getBeverage(const BeverageType::type type);
+  void recv_getBeverage(std::string& _return, const int32_t seqid);
  protected:
   std::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   std::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
