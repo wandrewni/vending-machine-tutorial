@@ -175,3 +175,5 @@ function getBeverage_result:write(oprot)
   oprot:writeFieldStop()
   oprot:writeStructEnd()
 end
+
+return BeveragePreferenceServiceClient

@@ -22,6 +22,13 @@ local TException = Thrift.TException
 local OrderBeverageServiceClient = __TObject.new(__TClient, {
   __type = 'OrderBeverageServiceClient'
 })
+local PlaceOrder_args = __TObject:new{
+  city
+}
+local PlaceOrder_result = __TObject:new{
+  success,
+  se
+}
 
 function OrderBeverageServiceClient:PlaceOrder(city)
   self:send_PlaceOrder(city)
@@ -141,11 +148,6 @@ function PlaceOrder_args:write(oprot)
   oprot:writeStructEnd()
 end
 
-PlaceOrder_result = __TObject:new{
-  success,
-  se
-}
-
 function PlaceOrder_result:read(iprot)
   iprot:readStructBegin()
   while true do
@@ -188,3 +190,5 @@ function PlaceOrder_result:write(oprot)
   oprot:writeFieldStop()
   oprot:writeStructEnd()
 end
+
+return OrderBeverageServiceClient
