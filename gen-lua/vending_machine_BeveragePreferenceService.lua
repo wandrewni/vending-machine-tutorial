@@ -9,25 +9,25 @@
 require 'Thrift'
 require 'vending_machine_ttypes'
 
-OrderBeverageServiceClient = __TObject.new(__TClient, {
-  __type = 'OrderBeverageServiceClient'
+BeveragePreferenceServiceClient = __TObject.new(__TClient, {
+  __type = 'BeveragePreferenceServiceClient'
 })
 
-function OrderBeverageServiceClient:PlaceOrder(city)
-  self:send_PlaceOrder(city)
-  return self:recv_PlaceOrder(city)
+function BeveragePreferenceServiceClient:GetWeather(city)
+  self:send_GetWeather(city)
+  return self:recv_GetWeather(city)
 end
 
-function OrderBeverageServiceClient:send_PlaceOrder(city)
-  self.oprot:writeMessageBegin('PlaceOrder', TMessageType.CALL, self._seqid)
-  local args = PlaceOrder_args:new{}
+function BeveragePreferenceServiceClient:send_GetWeather(city)
+  self.oprot:writeMessageBegin('GetWeather', TMessageType.CALL, self._seqid)
+  local args = GetWeather_args:new{}
   args.city = city
   args:write(self.oprot)
   self.oprot:writeMessageEnd()
   self.oprot.trans:flush()
 end
 
-function OrderBeverageServiceClient:recv_PlaceOrder(city)
+function BeveragePreferenceServiceClient:recv_GetWeather(city)
   local fname, mtype, rseqid = self.iprot:readMessageBegin()
   if mtype == TMessageType.EXCEPTION then
     local x = TApplicationException:new{}
@@ -35,27 +35,25 @@ function OrderBeverageServiceClient:recv_PlaceOrder(city)
     self.iprot:readMessageEnd()
     error(x)
   end
-  local result = PlaceOrder_result:new{}
+  local result = GetWeather_result:new{}
   result:read(self.iprot)
   self.iprot:readMessageEnd()
   if result.success ~= nil then
     return result.success
-  elseif result.se then
-    error(result.se)
   end
   error(TApplicationException:new{errorCode = TApplicationException.MISSING_RESULT})
 end
-OrderBeverageServiceIface = __TObject:new{
-  __type = 'OrderBeverageServiceIface'
+BeveragePreferenceServiceIface = __TObject:new{
+  __type = 'BeveragePreferenceServiceIface'
 }
 
 
-OrderBeverageServiceProcessor = __TObject.new(__TProcessor
+BeveragePreferenceServiceProcessor = __TObject.new(__TProcessor
 , {
- __type = 'OrderBeverageServiceProcessor'
+ __type = 'BeveragePreferenceServiceProcessor'
 })
 
-function OrderBeverageServiceProcessor:process(iprot, oprot, server_ctx)
+function BeveragePreferenceServiceProcessor:process(iprot, oprot, server_ctx)
   local name, mtype, seqid = iprot:readMessageBegin()
   local func_name = 'process_' .. name
   if not self[func_name] or ttype(self[func_name]) ~= 'function' then
@@ -76,22 +74,20 @@ function OrderBeverageServiceProcessor:process(iprot, oprot, server_ctx)
   end
 end
 
-function OrderBeverageServiceProcessor:process_PlaceOrder(seqid, iprot, oprot, server_ctx)
-  local args = PlaceOrder_args:new{}
+function BeveragePreferenceServiceProcessor:process_GetWeather(seqid, iprot, oprot, server_ctx)
+  local args = GetWeather_args:new{}
   local reply_type = TMessageType.REPLY
   args:read(iprot)
   iprot:readMessageEnd()
-  local result = PlaceOrder_result:new{}
-  local status, res = pcall(self.handler.PlaceOrder, self.handler, args.city)
+  local result = GetWeather_result:new{}
+  local status, res = pcall(self.handler.GetWeather, self.handler, args.city)
   if not status then
     reply_type = TMessageType.EXCEPTION
     result = TApplicationException:new{message = res}
-  elseif ttype(res) == 'ServiceException' then
-    result.se = res
   else
     result.success = res
   end
-  oprot:writeMessageBegin('PlaceOrder', reply_type, seqid)
+  oprot:writeMessageBegin('GetWeather', reply_type, seqid)
   result:write(oprot)
   oprot:writeMessageEnd()
   oprot.trans:flush()
@@ -100,11 +96,11 @@ end
 
 -- HELPER FUNCTIONS AND STRUCTURES
 
-PlaceOrder_args = __TObject:new{
+GetWeather_args = __TObject:new{
   city
 }
 
-function PlaceOrder_args:read(iprot)
+function GetWeather_args:read(iprot)
   iprot:readStructBegin()
   while true do
     local fname, ftype, fid = iprot:readFieldBegin()
@@ -124,8 +120,8 @@ function PlaceOrder_args:read(iprot)
   iprot:readStructEnd()
 end
 
-function PlaceOrder_args:write(oprot)
-  oprot:writeStructBegin('PlaceOrder_args')
+function GetWeather_args:write(oprot)
+  oprot:writeStructBegin('GetWeather_args')
   if self.city ~= nil then
     oprot:writeFieldBegin('city', TType.I64, 1)
     oprot:writeI64(self.city)
@@ -135,27 +131,19 @@ function PlaceOrder_args:write(oprot)
   oprot:writeStructEnd()
 end
 
-PlaceOrder_result = __TObject:new{
-  success,
-  se
+GetWeather_result = __TObject:new{
+  success
 }
 
-function PlaceOrder_result:read(iprot)
+function GetWeather_result:read(iprot)
   iprot:readStructBegin()
   while true do
     local fname, ftype, fid = iprot:readFieldBegin()
     if ftype == TType.STOP then
       break
     elseif fid == 0 then
-      if ftype == TType.STRING then
-        self.success = iprot:readString()
-      else
-        iprot:skip(ftype)
-      end
-    elseif fid == 1 then
-      if ftype == TType.STRUCT then
-        self.se = ServiceException:new{}
-        self.se:read(iprot)
+      if ftype == TType.I32 then
+        self.success = iprot:readI32()
       else
         iprot:skip(ftype)
       end
@@ -167,16 +155,11 @@ function PlaceOrder_result:read(iprot)
   iprot:readStructEnd()
 end
 
-function PlaceOrder_result:write(oprot)
-  oprot:writeStructBegin('PlaceOrder_result')
+function GetWeather_result:write(oprot)
+  oprot:writeStructBegin('GetWeather_result')
   if self.success ~= nil then
-    oprot:writeFieldBegin('success', TType.STRING, 0)
-    oprot:writeString(self.success)
-    oprot:writeFieldEnd()
-  end
-  if self.se ~= nil then
-    oprot:writeFieldBegin('se', TType.STRUCT, 1)
-    self.se:write(oprot)
+    oprot:writeFieldBegin('success', TType.I32, 0)
+    oprot:writeI32(self.success)
     oprot:writeFieldEnd()
   end
   oprot:writeFieldStop()
