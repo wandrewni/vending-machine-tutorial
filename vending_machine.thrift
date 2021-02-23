@@ -42,15 +42,14 @@ service OrderBeverageService{
 	)throws (1: ServiceException se)
 }
 
-service UpdateWeatherService{
-	void UpdateWeather(
-		1: i64 city,
-		2: WeatherType w
-	)
-}
-
 service WeatherService{
 	WeatherType GetWeather(
 		1: i64 city
 	)
+}
+
+service BeveragePreferenceService{
+    string getBeverage(
+        1: BeverageType type
+    )
 }

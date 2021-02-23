@@ -11,6 +11,11 @@ services:
     hostname: weather-service
     restart: always
     entrypoint: WeatherService
+  beverage-preference-service:
+    image: wandrewni/vending-machine:latest
+    hostname: beverage-preference-service
+    restart: always
+    entrypoint: BeveragePreferenceService
   nginx-thrift:
     image: yg397/openresty-thrift:xenial
     hostname: nginx-thrift
