@@ -8,6 +8,7 @@
 
 #include "../../gen-cpp/OrderBeverageService.h"
 #include "../../gen-cpp/WeatherService.h"
+#include "../../gen-cpp/BeveragePreferenceService.h"
 
 #include "../ClientPool.h"
 #include "../ThriftClient.h"
@@ -18,17 +19,17 @@ namespace vending_machine{
 class OrderBeverageServiceHandler : public OrderBeverageServiceIf {
  public:
   OrderBeverageServiceHandler(
-		  ClientPool<ThriftClient<WeatherServiceClient>> *) ;
+		  ClientPool<ThriftClient<BeveragePreferenceServiceClient>> *) ;
   ~OrderBeverageServiceHandler() override=default;
 
   void PlaceOrder(std::string& _return, const int64_t city) override;
  private:
-  ClientPool<ThriftClient<WeatherServiceClient>> *_weather_client_pool;
+  ClientPool<ThriftClient<BeveragePreferenceServiceClient>> *_weather_client_pool;
 };
 
 // Constructor
 OrderBeverageServiceHandler::OrderBeverageServiceHandler(
-		ClientPool<ThriftClient<WeatherServiceClient>> *weather_client_pool) {
+		ClientPool<ThriftClient<BeveragePreferenceServiceClient>> *weather_client_pool) {
 
      // Storing the clientpool
      _weather_client_pool = weather_client_pool;

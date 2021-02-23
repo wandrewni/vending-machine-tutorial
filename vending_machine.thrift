@@ -47,3 +47,9 @@ service WeatherService{
 		1: i64 city
 	)
 }
+
+service BeveragePreferenceService{
+    WeatherType GetWeather(
+        1: i64 city
+    )
+}
