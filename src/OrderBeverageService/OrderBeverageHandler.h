@@ -69,14 +69,31 @@ void OrderBeverageServiceHandler::PlaceOrder(std::string& _return, const int64_t
     }
     _weather_client_pool->Push(weather_client_wrapper);
     
-   // 3. business logic
-   if(weatherType == WeatherType::type::WARM)
-//   std::string beverage = ""
+    // 3. get the beverage preference service client pool
+    auto beverage_preference_service_client_wrapper = _beverage_preference_client_pool->Pop();
+    if (!beverage_preference_service_client_wrapper) {
+      ServiceException se;
+      se.errorCode = ErrorCode::SE_THRIFT_CONN_ERROR;
+      se.message = "Failed to connect to beverage-preference-service";
+      throw se;
+    }
+    auto beverage_preference_client = beverage_preference_service_client_wrapper->GetClient();
 
+    // by default get water
+    std::string beverage = "water"
 
-	_return = "Cold beverage";//BeverageType::type::COLD;
-   else
-	   _return = "Hot beverage";//BeverageType::type::HOT;
+    // 4. call the remote procedure : GetWeather
+    try {
+      beverage = beverage_preference_client->getBeverage(weatherType);
+    } catch (...) {
+      _beverage_preference_client_pool->Push(beverage_preference_service_client_wrapper);
+      LOG(error) << "Failed to send call getBeverage to beverage-preference-client";
+      throw;
+    }
+    _beverage_preference_client_pool->Push(beverage_preference_service_client_wrapper);
+    
+   // 5. business logic
+   _return = beverage
 #endif
 }
 
